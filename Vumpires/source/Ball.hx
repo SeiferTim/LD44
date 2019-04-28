@@ -25,7 +25,7 @@ class Ball extends FlxSprite
 	override public function update(elapsed:Float):Void 
 	{
 		super.update(elapsed);
-		if ((velocity.x > 0 && x > FlxG.width) || (velocity.x < 0 && x < -width))
+		if ((velocity.x > 0 && x > FlxG.worldBounds.width) || (velocity.x < 0 && x < -width))
 			kill();
 	}
 	

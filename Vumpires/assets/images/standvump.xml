@@ -1,0 +1,4 @@
+<TextureAtlas imagePath="sprites.png">
+	<SubTexture name="standvump-1.png" x="0" y="0" width="26" height="31" frameX="-10" frameY="-9" frameWidth="48" frameHeight="40" />
+	<SubTexture name="standvump-2.png" x="26" y="0" width="24" height="33" frameX="-8" frameY="-7" frameWidth="48" frameHeight="40" />
+</TextureAtlas>

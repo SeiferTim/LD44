@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.2.3" orientation="orthogonal" renderorder="right-down" width="120" height="30" tilewidth="16" tileheight="16" infinite="0" nextlayerid="8" nextobjectid="26">
+ <tileset firstgid="1" source="tmp-tiles.tsx"/>
+ <tileset firstgid="81" source="Enemies.tsx"/>
+ <layer id="4" name="background" width="120" height="30">
+  <data encoding="base64" compression="zlib">
+   eJzt0zEOwjAQRFEHCKQAAhSQAAVwEGrufyJWykay0qCwa9nFf9JIHrejDQEAAAAAAAAAAAAA8I+z5CLpJn3uX2X8GwNfD8lT8pr0uX+V8Y99/e0k20KyCuzraRnybxpnH9jXU0m3G98w7Eq73fiGYVfi7Y6BXS3ZaGqHvtZ349AxeBvSSo6a1qEf9H1y6Bh8DOklN03v0K/6vjt02CwKD2xy78e+aeXej33Tyr0f+6aVe79f+QLpSh+T
+  </data>
+ </layer>
+ <layer id="5" name="walls" width="120" height="30">
+  <data encoding="base64" compression="zlib">
+   eJzt1jEOgzAMhWHUK7Vru7a9/4XKwBBFCBzHdhz6f5JHCNji4WUBAADRHsqyvFfrOYjHLK6L2ealzUqPLCa3x6Kv18eM52KdlZYZfG88B76se/xc67WVx/0h59H7er5e51zZ6D34KF/L+Wr/D8ijnsfe9yu5DnmVs5LOt74OOr2ZW+/DZyXNZzJ7PE1fW75fy3PRRtvj3vkyW73o/TnifKvnxj7p/kxP53W2PzPbWJ6557U/k88y3u/G/jxORN/Yn/t9E1c539HPclS3JDUbi3xGXu+1PlsBwL/5AY+Hacw=
+  </data>
+ </layer>
+ <objectgroup id="7" name="objects">
+  <object id="6" template="player_start.tx" x="24" y="384"/>
+  <object id="19" template="enemy_1.tx" x="272" y="400"/>
+  <object id="20" template="enemy_1.tx" x="400" y="400"/>
+  <object id="21" template="enemy_1.tx" x="496" y="400"/>
+  <object id="22" template="enemy_2.tx" x="336" y="400"/>
+  <object id="25" template="enemy_3.tx" x="304" y="352"/>
+ </objectgroup>
+ <layer id="6" name="foreground" width="120" height="30" visible="0">
+  <data encoding="base64" compression="zlib">
+   eJzt2LEJADAMA7Cc2P+v6VT6gIeQSJDVGLylCgAAAAAAAL4jb2xeuhsAAAAAADyd/+Nb85JHL/adLb3vBd5jFoE=
+  </data>
+ </layer>
+</map>

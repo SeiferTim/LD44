@@ -45,7 +45,7 @@ class Player extends FlxSprite
 		height = 24;
 		offset.x = 2;
 		
-		attack = new FlxObject(0, 0, 13, 9);
+		attack = new FlxObject(0, 0, 10, 9);
 		attack.alive = false;
 		
 		animation.addByPrefix("walk", "player-walk-", 8, true, false, false);
@@ -118,7 +118,7 @@ class Player extends FlxSprite
 		
 		
 		attack.y = y + 10;
-		attack.x = x + (facing == FlxObject.LEFT ? width - 23 : 13);
+		attack.x = x + (facing == FlxObject.LEFT ? width - 26 : 16);
 		
 		attack.alive = swinging;
 		
@@ -156,6 +156,7 @@ class Player extends FlxSprite
 		var s:PlayState = cast(FlxG.state, PlayState);
 		if (s.ballCount > 0)
 		{
+			FlxG.sound.play(AssetPaths.BallThrow__wav);
 			s.throwBall(facing == FlxObject.LEFT ? x - 2 : x + width - 5, y + 9, facing, true);
 			s.ballCount--;
 			ballCooldown = 2;

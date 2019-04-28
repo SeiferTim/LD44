@@ -44,9 +44,9 @@ class Vumpire extends FlxSprite
 		cast(FlxG.state, PlayState).score+= 100;
 	}
 	
-	override public function reset(X:Float, Y:Float):Void 
+	public function spawn(X:Float, Y:Float):Void 
 	{
-		super.reset(X, Y - height);
+		reset(X,Y-height);
 		FlxFlicker.stopFlickering(this);
 		alive = true;
 		animation.play("walk");
@@ -56,13 +56,15 @@ class Vumpire extends FlxSprite
 	
 	override public function update(elapsed:Float):Void 
 	{
+		if (!isOnScreen())
+		{
+			return;
+		}
 		super.update(elapsed);
-		if (x < -width || y > FlxG.height)
+		if (y > 1000)
 		{
 			alive = exists = false;
 			FlxFlicker.stopFlickering(this);
-			
-			cast(FlxG.state, PlayState).spawnVumpire(FlxG.width - 2, 160); // just for testing!
 		}
 	}
 	
