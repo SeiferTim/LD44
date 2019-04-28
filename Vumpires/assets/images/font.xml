@@ -1,0 +1,21 @@
+<font>
+	<info face="C:\Users	hely\Documents\LD44\raw-assets\font-export" size="23" bold="0" italic="0" />
+	<common lineHeight="23" scaleW="68" scaleH="47" pages="1" />
+	<pages>
+		<page id="0" file="C:\Users	hely\Documents\LD44\raw-assets\font-export.png" />
+	</pages>
+	<chars count="10">
+		<char id="48" x="28" y="0" width="13" height="23" xoffset="0" yoffset="0" xadvance="15" /><!-- 0 -->
+		<char id="49" x="55" y="0" width="13" height="22" xoffset="0" yoffset="1" xadvance="15" /><!-- 1 -->
+		<char id="50" x="28" y="24" width="13" height="23" xoffset="0" yoffset="0" xadvance="15" /><!-- 2 -->
+		<char id="51" x="54" y="22" width="13" height="23" xoffset="0" yoffset="0" xadvance="15" /><!-- 3 -->
+		<char id="52" x="42" y="0" width="13" height="22" xoffset="0" yoffset="1" xadvance="15" /><!-- 4 -->
+		<char id="53" x="14" y="0" width="13" height="23" xoffset="0" yoffset="0" xadvance="15" /><!-- 5 -->
+		<char id="54" x="14" y="24" width="13" height="23" xoffset="0" yoffset="0" xadvance="15" /><!-- 6 -->
+		<char id="55" x="41" y="22" width="13" height="23" xoffset="0" yoffset="0" xadvance="15" /><!-- 7 -->
+		<char id="56" x="0" y="24" width="13" height="23" xoffset="0" yoffset="0" xadvance="15" /><!-- 8 -->
+		<char id="57" x="0" y="0" width="13" height="23" xoffset="0" yoffset="0" xadvance="15" /><!-- 9 -->
+	</chars>
+	<kernings count="0">
+	</kernings>
+</font>

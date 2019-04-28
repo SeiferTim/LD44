@@ -1,0 +1,7 @@
+<TextureAtlas imagePath="sprites.png">
+	<SubTexture name="player-dead.png" x="0" y="23" width="24" height="11" frameX="-0" frameY="-13" frameWidth="24" frameHeight="24" />
+	<SubTexture name="player-hurt.png" x="0" y="0" width="24" height="23" frameX="-0" frameY="-0" frameWidth="24" frameHeight="24" />
+	<SubTexture name="player-swing.png" x="24" y="0" width="24" height="24" frameX="-0" frameY="-0" frameWidth="24" frameHeight="24" />
+	<SubTexture name="player-walk-0.png" x="40" y="24" width="12" height="24" frameX="-2" frameY="-0" frameWidth="24" frameHeight="24" />
+	<SubTexture name="player-walk-1.png" x="24" y="24" width="16" height="22" frameX="-0" frameY="-3" frameWidth="24" frameHeight="25" />
+</TextureAtlas>
