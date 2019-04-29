@@ -13,7 +13,7 @@ import flixel.input.actions.FlxActionManager;
 class Player extends FlxSprite 
 {
 	
-	static var actions:FlxActionManager;
+	public static var actions:FlxActionManager;
 	
 	public var left:FlxActionDigital;
 	public var right:FlxActionDigital;
@@ -129,6 +129,7 @@ class Player extends FlxSprite
 	{
 		fsm.destroy();
 		fsm = null;
+		
 		actions.destroy();
 		actions = null;
 		
@@ -347,10 +348,9 @@ class Dead extends FlxFSMState<Player>
 		FlxG.sound.play(AssetPaths.PlayerDeath__wav, .5);
 		owner.alive = false;
 		owner.exists = true;
-		if (cast(FlxG.state, PlayState).livesCount > 0)
-		{
-			respawnTimer = 3;
-		}
+		
+		respawnTimer = 3;
+		
 	}
 	
 	override public function update(elapsed:Float, owner:Player, fsm:FlxFSM<Player>):Void 
@@ -364,11 +364,23 @@ class Dead extends FlxFSMState<Player>
 			else
 			{
 				respawnTimer = -1000;
-				cast(FlxG.state, PlayState).livesCount--;
 				
-				owner.respawn();
+				var p:PlayState = cast FlxG.state;
+				if (p.livesCount > 0)
+				{
+					p.livesCount--;
+					owner.respawn();
+				}
+				else if (!p.leaving)
+				{
+					p.leaving = true;
+					FlxG.sound.music.stop();
+					FlxG.inputs.remove(Player.actions);
+					FlxG.switchState(new GameOverState());
+				}			
 			}
 		}
 		
 	}
+	
 }

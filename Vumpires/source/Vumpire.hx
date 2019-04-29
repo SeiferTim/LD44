@@ -60,12 +60,22 @@ class Vumpire extends FlxSprite
 		{
 			return;
 		}
-		super.update(elapsed);
+		
+		if (justTouched(FlxObject.WALL))
+		{
+			facing = facing == FlxObject.LEFT ? FlxObject.RIGHT : FlxObject.LEFT;
+			velocity.x = facing == FlxObject.LEFT ? -100 : 100;
+			x += velocity.x * elapsed;
+			touching = FlxObject.NONE;
+		}
+		
 		if (y > 1000)
 		{
 			alive = exists = false;
 			FlxFlicker.stopFlickering(this);
 		}
+		super.update(elapsed);
+		
 	}
 	
 }

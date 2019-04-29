@@ -17,7 +17,7 @@ import haxe.io.Path;
 
 class TiledLevel extends TiledMap 
 {
-	
+	public var coll:FlxTilemapExt;
 	public var wallsLayer:FlxGroup;
 	public var background:FlxGroup;
 	public var foreground:FlxGroup;
@@ -37,18 +37,13 @@ class TiledLevel extends TiledMap
 		
 		FlxG.camera.setScrollBoundsRect(0, 0, fullWidth, fullHeight, true);
 		
-		
 		var t:TiledTileLayer = cast layerMap.get("walls");
 		
 		var tS:TiledTileSet = tilesets.get("tmp-tiles");
 		
-		
 		var tileMap:FlxTilemapExt = new FlxTilemapExt();
 		tileMap.loadMapFromArray(t.tileArray, width, height, Path.normalize(rootPath + tS.imageSource), tS.tileWidth, tS.tileHeight, OFF, tS.firstGID, 1, 1);
-		
-		trace(t.tileArray);		
-		
-		
+				
 		for (tileProp in tS.tileProps)
 		{
 			if (tileProp != null)
@@ -57,8 +52,6 @@ class TiledLevel extends TiledMap
 				{
 					if (tileProp.get("cloud") == "true")
 					{
-						
-						trace(tS.fromGid(tileProp.tileID), tS.toGid(tileProp.tileID), tileProp.tileID);
 						tileMap.setTileProperties(tS.toGid(tileProp.tileID), FlxObject.UP);
 					}
 				}
@@ -67,6 +60,7 @@ class TiledLevel extends TiledMap
 		
 		collidableTileLayers = new Array<FlxTilemap>();
 		collidableTileLayers.push(tileMap);
+		coll = tileMap;
 		
 		wallsLayer.add(tileMap);
 		
@@ -112,14 +106,15 @@ class TiledLevel extends TiledMap
 		
 	}
 	
-	public function collideWithLevel(obj:FlxBasic, ?notifyCallback:Dynamic->Dynamic->Void, ?processCallback:Dynamic->Dynamic->Bool):Bool
+	public function collideWithLevel(obj:FlxBasic):Bool
 	{
 		for (map in collidableTileLayers)
 		{
-			if (FlxG.overlap(map, obj, notifyCallback, processCallback != null ? processCallback : FlxObject.separate))
-			{
-				return true;
-			}
+			//if (FlxG.overlap(map, obj, notifyCallback, processCallback != null ? processCallback : FlxObject.separate))
+			//{
+			//	return true;
+			//}
+			FlxG.collide(coll, obj);
 		}
 		return false;
 	}

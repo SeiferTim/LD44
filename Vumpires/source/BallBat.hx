@@ -61,11 +61,17 @@ class BallBat extends FlxSprite
 		{
 			return;
 		}
-		super.update(elapsed);
+		
 		if (justTouched(FlxObject.WALL))
 		{
-			velocity.x *= -1;
+			facing = facing == FlxObject.LEFT ? FlxObject.RIGHT : FlxObject.LEFT;
+			velocity.x = facing == FlxObject.LEFT ? -160 : 160;
+			x += velocity.x * elapsed;
+			touching = FlxObject.NONE;
 		}
+		
+		super.update(elapsed);
+		
 		if (x < -width)
 		{
 			alive = exists = false;

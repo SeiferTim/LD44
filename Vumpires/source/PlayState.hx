@@ -7,6 +7,7 @@ import flixel.addons.transition.FlxTransitionableState;
 import flixel.effects.FlxFlicker;
 import flixel.group.FlxGroup;
 import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.tile.FlxTile;
 
 class PlayState extends FlxTransitionableState
 {
@@ -31,6 +32,8 @@ class PlayState extends FlxTransitionableState
 	public var enemies:FlxGroup;
 	public var playerBalls:FlxTypedGroup<Ball>;
 	public var enemyBalls:FlxTypedGroup<Ball>;
+	
+	public var leaving:Bool = false;
 	
 	override public function create():Void
 	{
@@ -62,17 +65,29 @@ class PlayState extends FlxTransitionableState
 		txtScore.text = StringTools.lpad(Std.string(score), "0", 7);
 		txtVumps.text = StringTools.lpad(Std.string(vumpCount), "0", 7);
 		
+		if (vumpCount <= 0 && !leaving)
+		{
+			// win!
+			leaving = true;
+			FlxG.switchState(new GameOverState(false));
+			
+		}
+		
 		map.collideWithLevel(player);
 		map.collideWithLevel(enemies);
-		FlxG.overlap(enemies, player.attack, playerAttackHitVumpire, checkPlayerAttackHitVumpire);
-		FlxG.overlap(enemyBalls, player.attack, playerAttackHitEnemyBall, checkPlayerAttackHitEnemyBall);
-		FlxG.overlap(enemies, playerBalls, playerBallHitVumpire, checkPlayerBallHitVumpire);
-		FlxG.overlap(enemies, player, vumpireHitPlayer, checkVumpireHitPlayer);
-		FlxG.overlap(enemyBalls, player, enemyBallHitPlayer, checkEnemyBallHitPlayer);
+		if (!leaving)
 		
+		{		
+			FlxG.overlap(enemies, player.attack, playerAttackHitVumpire, checkPlayerAttackHitVumpire);
+			FlxG.overlap(enemyBalls, player.attack, playerAttackHitEnemyBall, checkPlayerAttackHitEnemyBall);
+			FlxG.overlap(enemies, playerBalls, playerBallHitVumpire, checkPlayerBallHitVumpire);
+			FlxG.overlap(enemies, player, vumpireHitPlayer, checkVumpireHitPlayer);
+			FlxG.overlap(enemyBalls, player, enemyBallHitPlayer, checkEnemyBallHitPlayer);
+		}
 		
 		
 	}
+	
 	
 	private function spawnEnemies():Void
 	{
@@ -129,7 +144,7 @@ class PlayState extends FlxTransitionableState
 	
 	private function checkPlayerBallHitVumpire(V:FlxSprite, B:Ball):Bool
 	{
-		if (B.alive && V.alive && B.exists && V.exists)
+		if (B.alive && V.alive && B.exists && V.exists && B.isOnScreen() && V.isOnScreen())
 			return FlxG.pixelPerfectOverlap(V, B);
 		return false;
 	}
@@ -193,8 +208,8 @@ class PlayState extends FlxTransitionableState
 		s.scrollFactor.set();
 		add(s);
 		
-		moon = new FlxSprite(FlxG.width - 80, -12, AssetPaths.moon__png);
-		moon.scrollFactor.set();
+		moon = new FlxSprite(-60, -24, AssetPaths.moon__png);
+		moon.scrollFactor.set(-.1,.025);
 		add(moon);
 		
 		map = new TiledLevel(AssetPaths.map__tmx, "assets/data/");
