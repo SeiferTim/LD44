@@ -7,6 +7,7 @@ import flixel.addons.transition.FlxTransitionableState;
 import flixel.effects.FlxFlicker;
 import flixel.group.FlxGroup;
 import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.math.FlxPoint;
 import flixel.tile.FlxTile;
 
 class PlayState extends FlxTransitionableState
@@ -32,6 +33,7 @@ class PlayState extends FlxTransitionableState
 	public var enemies:FlxGroup;
 	public var playerBalls:FlxTypedGroup<Ball>;
 	public var enemyBalls:FlxTypedGroup<Ball>;
+	public var ballDrops:FlxTypedGroup<BallDrop>;
 	
 	public var leaving:Bool = false;
 	
@@ -77,6 +79,7 @@ class PlayState extends FlxTransitionableState
 		
 		map.collideWithLevel(player);
 		map.collideWithLevel(enemies);
+		map.collideWithLevel(ballDrops);
 		if (!leaving)
 		
 		{		
@@ -85,11 +88,24 @@ class PlayState extends FlxTransitionableState
 			FlxG.overlap(enemies, playerBalls, playerBallHitVumpire, checkPlayerBallHitVumpire);
 			FlxG.overlap(enemies, player, vumpireHitPlayer, checkVumpireHitPlayer);
 			FlxG.overlap(enemyBalls, player, enemyBallHitPlayer, checkEnemyBallHitPlayer);
+			FlxG.overlap(ballDrops, player, getBallDrop, checkGetBallDrop);
 		}
 		
 		
 	}
 	
+	
+	private function getBallDrop(B:BallDrop, P:Player):Void
+	{
+		B.kill();
+		ballCount++;
+		FlxG.sound.play(AssetPaths.BallGet__wav);
+	}
+	
+	private function checkGetBallDrop(B:BallDrop, P:Player):Bool
+	{
+		return B.alive && B.exists && P.alive && P.exists && ballCount < 9;
+	}
 	
 	private function spawnEnemies():Void
 	{
@@ -98,11 +114,11 @@ class PlayState extends FlxTransitionableState
 			switch (Type.getClass(e)) 
 			{
 				case Vumpire:
-					spawnVumpire(e.x, e.y);
+					spawnVumpire(e.x, e.y, e.facing);
 				case BallBat:
-					spawnBallBat(e.x, e.y);
+					spawnBallBat(e.x, e.y, e.facing);
 				case StandVump:
-					spawnStandVump(e.x, e.y);
+					spawnStandVump(e.x, e.y, e.facing);
 				default:
 					
 			}
@@ -116,6 +132,7 @@ class PlayState extends FlxTransitionableState
 	private function enemyBallHitPlayer(V:FlxSprite, P:Player):Void
 	{
 		P.kill();
+		
 	}
 	
 	private function checkEnemyBallHitPlayer(V:FlxSprite, P:Player):Bool
@@ -139,9 +156,17 @@ class PlayState extends FlxTransitionableState
 	
 	private function playerBallHitVumpire(V:FlxSprite, B:Ball):Void
 	{
+		var m:FlxPoint = V.getMidpoint();
 		V.kill();
 		B.kill();
 		vumpCount--;
+		for (i in 0...3)
+		{
+			if (FlxG.random.bool(30))
+			{
+				spawnBallDrop(m.x, m.y);
+			}
+		}
 	}
 	
 	private function checkPlayerBallHitVumpire(V:FlxSprite, B:Ball):Bool
@@ -152,7 +177,7 @@ class PlayState extends FlxTransitionableState
 	}
 	
 	
-	private function playerAttackHitEnemyBall(V:FlxSprite, A:FlxObject):Void
+	private function playerAttackHitEnemyBall(V:FlxSprite, A:FlxSprite):Void
 	{
 		FlxG.sound.play(AssetPaths.BallHit__wav);
 		throwBall(V.x, V.y, player.facing, true);
@@ -160,48 +185,76 @@ class PlayState extends FlxTransitionableState
 		
 	}
 	
-	private function checkPlayerAttackHitEnemyBall(V:FlxSprite, A:FlxObject):Bool
+	private function checkPlayerAttackHitEnemyBall(V:FlxSprite, A:FlxSprite):Bool
 	{
-		return A.alive && V.alive && V.exists;
+		if (A.alive && V.alive && V.exists && A.exists)
+			return FlxG.pixelPerfectOverlap(A, V);
+		return false;
 			
 	}
 	
-	private function playerAttackHitVumpire(V:FlxSprite, A:FlxObject):Void
+	private function playerAttackHitVumpire(V:FlxSprite, A:FlxSprite):Void
 	{
 		if (Type.getClass(V) == BallBat)
+		{
 			cast(V, BallBat).killedByBat = true;
+			
+		}
+		else
+		{
+			var m:FlxPoint = V.getMidpoint();
+			for (i in 0...3)
+			{
+				if (FlxG.random.bool(30))
+				{
+					spawnBallDrop(m.x, m.y);
+				}
+			}
+		}
 		V.kill();
 		vumpCount--;
 	}
 	
-	private function checkPlayerAttackHitVumpire(V:FlxSprite, A:FlxObject):Bool
+	private function checkPlayerAttackHitVumpire(V:FlxSprite, A:FlxSprite):Bool
 	{
-		return A.alive && V.alive && V.exists;
+		if (A.alive && V.alive && V.exists && A.exists)
+			return FlxG.pixelPerfectOverlap(A, V);
+		return false;
 			
 	}
 	
-	public function spawnBallBat(X, Y):BallBat
+	public function spawnBallBat(X:Float, Y:Float, Facing:Int):BallBat
 	{
 		var b = new BallBat();
-		b.spawn(X, Y);
+		b.spawn(X, Y, Facing);
 		enemies.add(b);
 		return b;
 	}
 	
-	public function spawnVumpire(X, Y):Vumpire
+	public function spawnVumpire(X:Float, Y:Float, Facing:Int):Vumpire
 	{
 		var v = new Vumpire();
-		v.spawn(X, Y);
+		v.spawn(X, Y, Facing);
 		enemies.add(v);
 		return v;
 	}
 	
-	public function spawnStandVump(X, Y):StandVump
+	public function spawnStandVump(X:Float, Y:Float, Facing:Int):StandVump
 	{
 		var v = new StandVump();
-		v.spawn(X, Y);
+		v.spawn(X, Y, Facing);
 		enemies.add(v);
 		return v;
+	}
+	
+	public function spawnBallDrop(X:Float, Y:Float):BallDrop
+	{
+		var b:BallDrop = ballDrops.recycle(BallDrop);
+		if (b == null)
+			b = new BallDrop();
+		b.spawn(X + FlxG.random.int( -10, 10), Y + FlxG.random.int( -15, 0));
+		ballDrops.add(b);
+		return b;
 	}
 	
 	private function setupLevel():Void
@@ -218,13 +271,17 @@ class PlayState extends FlxTransitionableState
 		
 		add(map.background);
 		add(map.wallsLayer);
-		add(map.foreground);
+		//add(map.foreground);
 		
 		enemies = new FlxGroup();
 		add(enemies);
 		
 		playerBalls = new FlxTypedGroup<Ball>(20);
 		add(playerBalls);
+		
+		ballDrops = new FlxTypedGroup<BallDrop>(50);
+		add(ballDrops);
+		
 		
 		player = new Player();
 		player.x = map.playerStart.x - (player.width/2);

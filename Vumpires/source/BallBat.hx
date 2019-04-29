@@ -46,13 +46,13 @@ class BallBat extends FlxSprite
 		super.kill();
 	}
 	
-	public function spawn(X:Float, Y:Float):Void 
+	public function spawn(X:Float, Y:Float, Facing:Int):Void 
 	{
 		reset(X,Y);
 		
 		alive = true;
 		animation.play("ballbat");
-		velocity.x = -160;
+		velocity.x = Facing == FlxObject.LEFT ? -160 : 160;
 	}
 	
 	override public function update(elapsed:Float):Void 

@@ -17,6 +17,8 @@ class StandVump extends FlxSprite
 		
 		frames = GraphicsCache.loadGraphicFromAtlas("standvump", AssetPaths.standvump__png, AssetPaths.standvump__xml).atlasFrames;
 		
+		
+		
 		width = 16;
 		height = 30;
 		offset.x = 13;
@@ -25,6 +27,9 @@ class StandVump extends FlxSprite
 		animation.addByNames("wait", ["standvump-1.png"], 8, false);
 		animation.addByNames("throw", ["standvump-2.png"], 4, false);
 		animation.play("wait");
+		
+		setFacingFlip(FlxObject.LEFT, false, false);
+		setFacingFlip(FlxObject.RIGHT, true, false);
 		
 		maxVelocity.set(0, 0);
 		
@@ -41,9 +46,10 @@ class StandVump extends FlxSprite
 		cast(FlxG.state, PlayState).score+= 200;
 	}
 	
-	public function spawn(X:Float, Y:Float):Void 
+	public function spawn(X:Float, Y:Float, Facing:Int):Void 
 	{
-		reset(X,Y-height);
+		reset(X, Y - height);
+		facing = Facing;
 		FlxFlicker.stopFlickering(this);
 		alive = true;
 		animation.play("wait");
@@ -68,7 +74,7 @@ class StandVump extends FlxSprite
 			if (throwTimer <= 0)
 			{
 				throwTimer += 3;
-				cast(FlxG.state, PlayState).throwBall(x - 2, y+8, FlxObject.LEFT, false);
+				cast(FlxG.state, PlayState).throwBall(facing == FlxObject.LEFT ? x - 2 : x + width + 2, y+12, facing, false);
 				animation.play("throw");
 			}
 			if (animation.finished && animation.name != "wait")

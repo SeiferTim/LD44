@@ -29,7 +29,7 @@ class Player extends FlxSprite
 	public static inline var GRAVITY:Int = 600;
 	public static inline var WALK_SPEED:Int = 80;
 	
-	public var attack:FlxObject;
+	public var attack:FlxSprite;
 	
 	public var swinging(get, null):Bool;
 	
@@ -45,7 +45,8 @@ class Player extends FlxSprite
 		height = 24;
 		offset.x = 2;
 		
-		attack = new FlxObject(0, 0, 10, 9);
+		attack = new FlxSprite();
+		attack.makeGraphic(12, 12);
 		attack.alive = false;
 		
 		animation.addByPrefix("walk", "player-walk-", 8, true, false, false);
@@ -116,11 +117,12 @@ class Player extends FlxSprite
 		
 		fsm.update(elapsed);
 		
-		
-		attack.y = y + 10;
-		attack.x = x + (facing == FlxObject.LEFT ? width - 26 : 16);
-		
 		attack.alive = swinging;
+		attack.y = y + 7;
+		if(facing == FlxObject.RIGHT)
+			attack.x = x + width;
+		else
+			attack.x = x - 12;
 		
 		super.update(elapsed);
 	}

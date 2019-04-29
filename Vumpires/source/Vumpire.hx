@@ -44,14 +44,15 @@ class Vumpire extends FlxSprite
 		cast(FlxG.state, PlayState).score+= 100;
 	}
 	
-	public function spawn(X:Float, Y:Float):Void 
+	public function spawn(X:Float, Y:Float, Facing:Int):Void 
 	{
-		reset(X,Y-height);
+		reset(X, Y - height);
+		facing = Facing;
 		FlxFlicker.stopFlickering(this);
 		alive = true;
 		animation.play("walk");
 		allowCollisions = FlxObject.ANY;
-		velocity.x = -100;
+		velocity.x = facing == FlxObject.LEFT ? -100 : 100;
 	}
 	
 	override public function update(elapsed:Float):Void 

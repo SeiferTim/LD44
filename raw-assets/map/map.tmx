@@ -1,28 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.3" orientation="orthogonal" renderorder="right-down" width="120" height="30" tilewidth="16" tileheight="16" infinite="0" nextlayerid="8" nextobjectid="26">
+<map version="1.2" tiledversion="1.2.3" orientation="orthogonal" renderorder="right-down" width="120" height="30" tilewidth="16" tileheight="16" infinite="0" nextlayerid="8" nextobjectid="105">
  <tileset firstgid="1" source="tmp-tiles.tsx"/>
  <tileset firstgid="81" source="Enemies.tsx"/>
  <layer id="4" name="background" width="120" height="30">
   <data encoding="base64" compression="zlib">
-   eJzt0zEOwjAQRFEHCKQAAhSQAAVwEGrufyJWykay0qCwa9nFf9JIHrejDQEAAAAAAAAAAAAA8I+z5CLpJn3uX2X8GwNfD8lT8pr0uX+V8Y99/e0k20KyCuzraRnybxpnH9jXU0m3G98w7Eq73fiGYVfi7Y6BXS3ZaGqHvtZ349AxeBvSSo6a1qEf9H1y6Bh8DOklN03v0K/6vjt02CwKD2xy78e+aeXej33Tyr0f+6aVe79f+QLpSh+T
+   eJztl01PwzAMhlNgjAPQwYEx4MDHaZw5D878/x9EIhphsrRzY7dxMj/SK83R6lR5lC0x5pdtEA7CnmP7pj5PnbdG1G/dqN+6Ub91o37rRv3WTU6/O4akzHtM5PLL4TZ0rH73yeGX0y10rH73mdvvFG591O88cJ+vYv+1U8xbI5znG4+en+XAfYZ1qF85cJ9hHepXDhLvKeqXjxUIpsZwjH7vbNY290E9dqwhjjXBe7k1aEEcodMbEAycfjHnOeq82P5DPNu82LwG9dixhjhWut8hB5R5Yf9zZDxXNpdCchZZk9L8ct/LYv1XiDhOTX6nMNfm/x4u1S/nvayvP8avpL0b28Nz+X0fCOZ5B1z7WJ+5z1fS9i7cwx7qemDvTh89iX0Xu38PPTv23D22lrh3feB7pvrlvDtz+Q2fx5Dqd2H+zlqLxHrZxX1uu88XhBr+7lL8fhq5fmEPDKl+4Xq2ibX/34P1LaHm8DuVV06/vg+GVL8bm4cum8T6sQusnwi1718KXwKy7Rl/E5xS+Bac3A7n9rubqK9EToRHoZHbn/qdltz+DuUHrqTP/A==
   </data>
  </layer>
  <layer id="5" name="walls" width="120" height="30">
   <data encoding="base64" compression="zlib">
-   eJztmNEOgjAMRYm/pK/yqv7/D+mihmWCtGs37rZ7kj7CRk92KcwT6Zn56A2QotBv39Bv3wS/l4xaI+c+OesQOV7nly4w8fBLt7ho8jmmRBYzt/3RnF/2tT20+UzHbeGdlZ4ZfFauQ37x/P717vF1eu/vu0c61IP8fZT6LbVOz+T+36gxE8d+c98Po4P0fzL1sXZ+JdeRBUn/ahK7kvpNryMLGr/WzE3n4b2S5jMze5ta5zenr5rz67luT6C6DVj9ju42YOldzfm5xvpe+0YCdbYKbPlF7ykSSH4De/Mz3eqw+i2Ze6XmZ+azjNLPxvnZDvJsyvnZzgO4Yr9H7+VfnUCqNTzymeBye9X9U4QQMhpPyrJvug==
+   eJztmsFywjAMRP0vpT30SumtwA3aU///axoN0dRAkomtVSwl2hndgtjxs8xiOKWUjim0VhHbU2sTITUdU8zvmkWzG3zXK4vzu+vqDfBMyAbfQ1fvgvpc3rIbteZ7APUJxsNqmZ9RbFnB+Fmt5hfNlhWM79UiP2uxZQXjm/bpf35rs81HGl5PaWbi3lzSXho5bN97s6qvhDufNWaG/Fn+fs7rZ1VIviQ0Y/Zn9f7UC1/k+iEZo/cfWl74oj1OMS65d6r1N/c96LnXvmruwjzw5c83RH5B550xf1p5rjSHeeDr4fwb8qeV50r6e+FrPb+M+dPIcyX9vfC16nGOP3SeK+nvga/G98ua3+446+Svm+sPxXiI71R/D3xR84vMN1z5+bzEPVWtT6ui9bt29S3sQ2w19rFk/8Ud9G39fvuqFbPV5Fub/7bOWMo3Z6vFV5oPtsxYwveRrbXzOdccxkv8n0t6X1bah9bvx3Dl53NrL1P1YrQuXZ0NVz6/rb1MVahOtP+ufYVCodDW9AeRXXsj
   </data>
  </layer>
  <objectgroup id="7" name="objects">
-  <object id="6" template="player_start.tx" x="24" y="384"/>
-  <object id="19" template="enemy_1.tx" x="272" y="400"/>
-  <object id="20" template="enemy_1.tx" x="400" y="400"/>
-  <object id="21" template="enemy_1.tx" x="496" y="400"/>
-  <object id="22" template="enemy_2.tx" x="336" y="400"/>
-  <object id="25" template="enemy_3.tx" x="304" y="352"/>
+  <object id="6" template="player_start.tx" x="56" y="384"/>
+  <object id="72" template="enemy_3.tx" x="1856" y="400"/>
+  <object id="73" template="enemy_3.tx" x="288" y="320"/>
+  <object id="74" template="enemy_3.tx" x="592" y="320"/>
+  <object id="75" template="enemy_2.tx" x="512" y="320"/>
+  <object id="76" template="enemy_1.tx" gid="2147483729" x="352" y="240"/>
+  <object id="77" template="enemy_2.tx" gid="2147483730" x="592" y="208"/>
+  <object id="78" template="enemy_3.tx" x="416" y="160"/>
+  <object id="80" template="enemy_3.tx" gid="2147483731" x="112" y="160"/>
+  <object id="81" template="enemy_1.tx" x="432" y="320"/>
+  <object id="82" template="enemy_1.tx" x="192" y="160"/>
+  <object id="83" template="enemy_1.tx" gid="2147483729" x="80" y="160"/>
+  <object id="84" template="enemy_2.tx" x="976" y="240"/>
+  <object id="85" template="enemy_3.tx" x="752" y="80"/>
+  <object id="86" template="enemy_1.tx" x="672" y="80"/>
+  <object id="87" template="enemy_3.tx" x="560" y="80"/>
+  <object id="88" template="enemy_3.tx" gid="2147483731" x="672" y="240"/>
+  <object id="89" template="enemy_3.tx" x="1232" y="320"/>
+  <object id="90" template="enemy_1.tx" x="1200" y="320"/>
+  <object id="91" template="enemy_1.tx" x="816" y="320"/>
+  <object id="92" template="enemy_1.tx" gid="2147483729" x="800" y="320"/>
+  <object id="93" template="enemy_3.tx" x="1072" y="400"/>
+  <object id="94" template="enemy_2.tx" x="1296" y="352"/>
+  <object id="95" template="enemy_1.tx" x="1136" y="400"/>
+  <object id="98" template="enemy_1.tx" x="1184" y="400"/>
+  <object id="99" template="enemy_1.tx" gid="2147483729" x="880" y="240"/>
+  <object id="100" template="enemy_1.tx" x="912" y="160"/>
+  <object id="101" template="enemy_3.tx" x="1424" y="400"/>
+  <object id="102" template="enemy_1.tx" x="1520" y="400"/>
+  <object id="103" template="enemy_1.tx" x="1392" y="400"/>
+  <object id="104" template="enemy_1.tx" x="1776" y="384"/>
  </objectgroup>
- <layer id="6" name="foreground" width="120" height="30" visible="0">
-  <data encoding="base64" compression="zlib">
-   eJzt2LEJADAMA7Cc2P+v6VT6gIeQSJDVGLylCgAAAAAAAL4jb2xeuhsAAAAAADyd/+Nb85JHL/adLb3vBd5jFoE=
-  </data>
- </layer>
 </map>
