@@ -2,7 +2,6 @@ package;
 
 import flixel.FlxG;
 import flixel.FlxSprite;
-import flixel.addons.transition.FlxTransitionSprite.GraphicTransTileCircle;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.addons.transition.TransitionData;
 import flixel.effects.FlxFlicker;
@@ -50,12 +49,22 @@ class TitleState extends FlxTransitionableState
 		FlxG.sound.playMusic(AssetPaths.Title__ogg);
 		#end
 		
-		var diamond:FlxGraphic = FlxGraphic.fromClass(GraphicTransTileCircle);
-		diamond.persist = true;
-		diamond.destroyOnNoUse = false;
+		
+		var circle:FlxGraphic = FlxGraphic.fromAssetKey(AssetPaths.circle__png, false, "circle", true);
+		circle.persist = true;
+		circle.destroyOnNoUse = false;
 		
 		var t:TransitionData = new TransitionData(TransitionType.TILES);
-		t.tileData = {asset: diamond, width: 32, height: 32};
+		
+		t.tileData = {
+			asset: circle,
+			width:8,
+			height:8,
+			frameRate: 16
+		};
+		
+		
+		
 		FlxTransitionableState.defaultTransIn = t;
 		
 		//var t:TransitionData = new TransitionData();

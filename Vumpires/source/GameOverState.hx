@@ -38,10 +38,6 @@ class GameOverState extends FlxTransitionableState
 	{
 
 		super.create();
-
-		
-		
-		
 		
 		elements = [];
 

@@ -69,6 +69,8 @@ class PlayState extends FlxTransitionableState
 		{
 			// win!
 			leaving = true;
+			FlxG.sound.music.stop();
+			FlxG.inputs.remove(Player.actions);
 			FlxG.switchState(new GameOverState(false));
 			
 		}

@@ -26,7 +26,7 @@
   </classpaths>
   <!-- Build options -->
   <build>
-    <option directives="flixel=4.6.1&#xA;openfl=8.9.0&#xA;lime=7.3.0&#xA;axollib=1.0.0&#xA;sure=0.1.1&#xA;flixel-addons=2.7.5&#xA;lime-openal&#xA;native&#xA;lime-curl&#xA;openfl-native&#xA;openfl-disable-handle-error&#xA;lime-harfbuzz&#xA;FLX_NO_FOCUS_LOST_SCREEN&#xA;tools=7.3.0&#xA;lime-cairo&#xA;NAPE_NO_INLINE&#xA;lime-opengl&#xA;no-compilation&#xA;FLX_NO_TOUCH&#xA;lime-native&#xA;lime-vorbis&#xA;lime-cffi&#xA;fdb&#xA;windows&#xA;desktop" />
+    <option directives="flixel=4.6.1&#xA;openfl=8.9.0&#xA;lime=7.3.0&#xA;axollib=1.0.0&#xA;sure=0.1.1&#xA;flixel-addons=2.7.5&#xA;lime-openal&#xA;native&#xA;lime-curl&#xA;openfl-native&#xA;lime-harfbuzz&#xA;FLX_NO_FOCUS_LOST_SCREEN&#xA;tools=7.3.0&#xA;lime-cairo&#xA;NAPE_NO_INLINE&#xA;FLX_NO_DEBUG&#xA;lime-opengl&#xA;no-compilation&#xA;NAPE_RELEASE_BUILD&#xA;FLX_NO_TOUCH&#xA;lime-native&#xA;lime-vorbis&#xA;lime-cffi&#xA;fdb&#xA;windows&#xA;desktop" />
     <option flashStrict="False" />
     <option noInlineOnDebug="False" />
     <option mainClass="ApplicationMain" />

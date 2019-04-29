@@ -4,10 +4,13 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.graphics.frames.FlxBitmapFont;
+import flixel.input.actions.FlxAction.FlxActionDigital;
+import flixel.input.actions.FlxActionManager;
 import flixel.text.FlxBitmapText;
 import flixel.text.FlxText.FlxTextAlign;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
+import flixel.ui.FlxBar;
 import flixel.util.FlxAxes;
 import flixel.util.FlxColor;
 
@@ -26,6 +29,17 @@ class MovieState extends FlxTransitionableState
 	private var blackout_top:FlxSprite;
 	private var blackout_bottom:FlxSprite;
 	private var whiteout:FlxSprite;
+	
+	static var actions:FlxActionManager;
+	
+	public var jump:FlxActionDigital;
+	public var swing:FlxActionDigital;
+	public var b:FlxActionDigital;
+	
+	private var txtSkip:FlxSprite;
+	private var bar:FlxBar;
+	private var skipTimer:Float = 0;
+	private var leaving:Bool = false;
 
 	override public function create():Void
 	{
@@ -84,6 +98,17 @@ class MovieState extends FlxTransitionableState
 		add(blackout_top);
 		add(blackout_bottom);
 		
+		txtSkip = new FlxSprite(0, 0, AssetPaths.skip__png);
+		txtSkip.x = FlxG.width - txtSkip.width - 4;
+		txtSkip.y = FlxG.height - txtSkip.height - 4;
+		txtSkip.visible = false;
+		
+		bar = new FlxBar(txtSkip.x -1, txtSkip.y -1, FlxBarFillDirection.LEFT_TO_RIGHT, Std.int(txtSkip.width) + 2, Std.int(txtSkip.height) + 2, this, "skipTimer", 0, 3, false);
+		bar.createFilledBar(0x0, 0xff5fcde4);
+		
+		add(bar);
+		add(txtSkip);
+		
 		add(scene_01);
 		add(scene_02);
 		add(scene_03);
@@ -99,6 +124,26 @@ class MovieState extends FlxTransitionableState
 		#else
 		FlxG.sound.playMusic(AssetPaths.Movie__ogg, 1, false);
 		#end
+		
+		jump = new FlxActionDigital();
+		swing = new FlxActionDigital();
+		b = new FlxActionDigital();
+		
+		if (actions == null)
+		{
+			actions = FlxG.inputs.add(new FlxActionManager());
+		}
+		
+		actions.addActions([jump, swing, b]);
+		
+		jump.addKey(X, PRESSED);
+		jump.addKey(SPACE, PRESSED);
+		jump.addGamepad(A, PRESSED);
+		jump.addGamepad(B, PRESSED);
+		swing.addKey(Z, PRESSED);
+		swing.addGamepad(X, PRESSED);
+		b.addKey(C, PRESSED);
+		b.addGamepad(Y, PRESSED);
 		
 		FlxTween.tween(scene_01, {alpha:1}, 1, {type:FlxTweenType.ONESHOT, ease:FlxEase.cubeIn, startDelay:2});
 		
@@ -118,6 +163,8 @@ class MovieState extends FlxTransitionableState
 								FlxG.sound.play(AssetPaths.FlashSound__wav);
 								whiteout.alpha = 1;
 								FlxTween.tween(whiteout, {alpha:0}, 1,{ease:FlxEase.quadOut,type:FlxTweenType.ONESHOT,onComplete: function(_){
+									leaving = true;
+									FlxG.inputs.remove(actions);
 									FlxG.switchState(new PlayState());
 								}});
 							});
@@ -126,6 +173,32 @@ class MovieState extends FlxTransitionableState
 				}});
 			}});
 		}, startDelay:.4});
+	}
+	
+	override public function update(elapsed:Float):Void 
+	{
+		
+		if (!leaving)
+		{
+			if (jump.triggered || b.triggered || swing.triggered)
+			{
+				skipTimer += elapsed;
+				if (skipTimer > 3)
+				{
+					leaving = true;
+					FlxG.inputs.remove(actions);
+					FlxG.switchState(new PlayState());
+				}
+			}
+			else if (skipTimer > 0)
+				skipTimer -= elapsed;
+				
+			txtSkip.visible = skipTimer > 0;
+				
+		}
+		
+		
+		super.update(elapsed);
 	}
 
 }
