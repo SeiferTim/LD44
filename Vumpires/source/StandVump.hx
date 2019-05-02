@@ -5,37 +5,34 @@ import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.effects.FlxFlicker;
 
-
 class StandVump extends FlxSprite
 {
 
 	private var throwTimer:Float= 3;
-	
-	public function new() 
+
+	public function new()
 	{
 		super();
-		
+
 		frames = GraphicsCache.loadGraphicFromAtlas("standvump", AssetPaths.standvump__png, AssetPaths.standvump__xml).atlasFrames;
-		
-		
-		
+
 		width = 16;
 		height = 30;
 		offset.x = 13;
 		offset.y = 10;
-		
+
 		animation.addByNames("wait", ["standvump-1.png"], 8, false);
 		animation.addByNames("throw", ["standvump-2.png"], 4, false);
 		animation.play("wait");
-		
+
 		setFacingFlip(FlxObject.LEFT, false, false);
 		setFacingFlip(FlxObject.RIGHT, true, false);
-		
+
 		maxVelocity.set(0, 0);
-		
+
 	}
-	
-	override public function kill():Void 
+
+	override public function kill():Void
 	{
 		alive = false;
 		allowCollisions = FlxObject.NONE;
@@ -45,8 +42,8 @@ class StandVump extends FlxSprite
 		FlxG.sound.play(AssetPaths.VumpireHurt__wav, .5);
 		cast(FlxG.state, PlayState).score+= 200;
 	}
-	
-	public function spawn(X:Float, Y:Float, Facing:Int):Void 
+
+	public function spawn(X:Float, Y:Float, Facing:Int):Void
 	{
 		reset(X, Y - height);
 		facing = Facing;
@@ -55,8 +52,8 @@ class StandVump extends FlxSprite
 		animation.play("wait");
 		allowCollisions = FlxObject.ANY;
 	}
-	
-	override public function update(elapsed:Float):Void 
+
+	override public function update(elapsed:Float):Void
 	{
 		if (!isOnScreen())
 		{
@@ -81,5 +78,5 @@ class StandVump extends FlxSprite
 				animation.play("wait");
 		}
 	}
-	
+
 }

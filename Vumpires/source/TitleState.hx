@@ -36,8 +36,6 @@ class TitleState extends FlxTransitionableState
 	
 	private var leaving:Bool = false;
 	
-	
-	
 	override public function create():Void 
 	{
 		
@@ -62,8 +60,6 @@ class TitleState extends FlxTransitionableState
 			height:8,
 			frameRate: 16
 		};
-		
-		
 		
 		FlxTransitionableState.defaultTransIn = t;
 		
@@ -206,7 +202,9 @@ class TitleState extends FlxTransitionableState
 		play = FlxDestroyUtil.destroy(play);
 		mini1 = FlxDestroyUtil.destroy(mini1);
 		mini2 = FlxDestroyUtil.destroy(mini2);
+		
 		actions = FlxDestroyUtil.destroy(actions);
+		
 		jump = FlxDestroyUtil.destroy(jump);
 		swing = FlxDestroyUtil.destroy(swing);
 		b = FlxDestroyUtil.destroy(b);

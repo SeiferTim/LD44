@@ -6,34 +6,34 @@ import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.effects.FlxFlicker;
 
-class Vumpire extends FlxSprite 
+class Vumpire extends FlxSprite
 {
 
-	public function new() 
+	public function new()
 	{
 		super();
-		
+
 		frames = GraphicsCache.loadGraphicFromAtlas("vumpire", AssetPaths.vumpire__png, AssetPaths.vumpire__xml).atlasFrames;
-		
+
 		width = 18;
 		height = 29;
 		offset.x = 4;
 		offset.y = 2;
-		
+
 		animation.addByPrefix("walk", "vump-walk-", 8, true);
 		animation.play("walk");
-		
+
 		setFacingFlip(FlxObject.LEFT, false, false);
 		setFacingFlip(FlxObject.RIGHT, true, false);
-		
+
 		facing = FlxObject.LEFT;
-		
+
 		acceleration.y = Player.GRAVITY;
 		maxVelocity.set(100, Player.GRAVITY);
-		
+
 	}
-	
-	override public function kill():Void 
+
+	override public function kill():Void
 	{
 		alive = false;
 		allowCollisions = FlxObject.NONE;
@@ -43,8 +43,8 @@ class Vumpire extends FlxSprite
 		FlxG.sound.play(AssetPaths.VumpireHurt__wav, .5);
 		cast(FlxG.state, PlayState).score+= 100;
 	}
-	
-	public function spawn(X:Float, Y:Float, Facing:Int):Void 
+
+	public function spawn(X:Float, Y:Float, Facing:Int):Void
 	{
 		reset(X, Y - height);
 		facing = Facing;
@@ -54,14 +54,14 @@ class Vumpire extends FlxSprite
 		allowCollisions = FlxObject.ANY;
 		velocity.x = facing == FlxObject.LEFT ? -100 : 100;
 	}
-	
-	override public function update(elapsed:Float):Void 
+
+	override public function update(elapsed:Float):Void
 	{
 		if (!isOnScreen())
 		{
 			return;
 		}
-		
+
 		if (justTouched(FlxObject.WALL))
 		{
 			facing = facing == FlxObject.LEFT ? FlxObject.RIGHT : FlxObject.LEFT;
@@ -69,14 +69,14 @@ class Vumpire extends FlxSprite
 			x += velocity.x * elapsed;
 			touching = FlxObject.NONE;
 		}
-		
+
 		if (y > 1000)
 		{
 			alive = exists = false;
 			FlxFlicker.stopFlickering(this);
 		}
 		super.update(elapsed);
-		
+
 	}
-	
+
 }

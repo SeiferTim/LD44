@@ -13,6 +13,7 @@ import flixel.tweens.FlxTween;
 import flixel.ui.FlxBar;
 import flixel.util.FlxAxes;
 import flixel.util.FlxColor;
+import flixel.util.FlxDestroyUtil;
 
 class MovieState extends FlxTransitionableState
 {
@@ -201,4 +202,33 @@ class MovieState extends FlxTransitionableState
 		super.update(elapsed);
 	}
 
+	
+	override public function destroy():Void 
+	{
+		
+		scene_01 = FlxDestroyUtil.destroy(scene_01);
+		scene_02 = FlxDestroyUtil.destroy(scene_02);
+		scene_03 = FlxDestroyUtil.destroy(scene_03);
+		scene_04 = FlxDestroyUtil.destroy(scene_04);
+		text_01 = FlxDestroyUtil.destroy(text_01);
+		text_02 = FlxDestroyUtil.destroy(text_02);
+		text_03 = FlxDestroyUtil.destroy(text_03);
+		text_04 = FlxDestroyUtil.destroy(text_04);
+		text_05 = FlxDestroyUtil.destroy(text_05);
+		blackout_top = FlxDestroyUtil.destroy(blackout_top);
+		blackout_bottom = FlxDestroyUtil.destroy(blackout_bottom);
+		whiteout = FlxDestroyUtil.destroy(whiteout);
+
+		actions = FlxDestroyUtil.destroy(actions);
+
+		jump = FlxDestroyUtil.destroy(jump);
+		swing = FlxDestroyUtil.destroy(swing);
+		b = FlxDestroyUtil.destroy(b);
+
+		txtSkip = FlxDestroyUtil.destroy(txtSkip);
+		bar = FlxDestroyUtil.destroy(bar);
+		
+		super.destroy();
+	}
+	
 }

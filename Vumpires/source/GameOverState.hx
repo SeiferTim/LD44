@@ -10,6 +10,7 @@ import flixel.text.FlxBitmapText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxAxes;
+import flixel.util.FlxDestroyUtil;
 
 class GameOverState extends FlxTransitionableState
 {
@@ -23,9 +24,9 @@ class GameOverState extends FlxTransitionableState
 	public var ball:FlxActionDigital;
 
 	private var leaving:Bool = false;
-	
+
 	private var a:FlxBitmapText;
-	
+
 	private var isGameOver:Bool = false;
 
 	public function new(?GameOver:Bool = true)
@@ -33,12 +34,12 @@ class GameOverState extends FlxTransitionableState
 		super();
 		isGameOver = GameOver;
 	}
-	
+
 	override public function create():Void
 	{
 
 		super.create();
-		
+
 		elements = [];
 
 		var t:FlxBitmapText = new FlxBitmapText(FlxBitmapFont.fromAngelCode(AssetPaths.story_text__png, AssetPaths.story_text__xml));
@@ -52,7 +53,7 @@ class GameOverState extends FlxTransitionableState
 			t.text = "YOU ARE THE MVP!";
 			FlxG.sound.play(AssetPaths.win__wav);
 		}
-		
+
 		t.screenCenter();
 		elements.push(t);
 		add(t);
@@ -84,19 +85,18 @@ class GameOverState extends FlxTransitionableState
 		add(a);
 
 		FlxTween.tween(a, {alpha:1}, .33, {ease:FlxEase.cubeIn, type:FlxTweenType.ONESHOT, startDelay:.66});
-		
-		
+
 		jump = new FlxActionDigital();
 		swing = new FlxActionDigital();
 		ball = new FlxActionDigital();
-		
+
 		if (actions == null)
 		{
 			actions = FlxG.inputs.add(new FlxActionManager());
 		}
-		
+
 		actions.addActions([jump, swing, ball]);
-		
+
 		jump.addKey(X, PRESSED);
 		jump.addKey(SPACE, PRESSED);
 		jump.addGamepad(A, PRESSED);
@@ -105,31 +105,49 @@ class GameOverState extends FlxTransitionableState
 		swing.addGamepad(X, PRESSED);
 		ball.addKey(C, PRESSED);
 		ball.addGamepad(Y, PRESSED);
-		
-		
 
 	}
-	
-	override public function update(elapsed:Float):Void 
+
+	override public function update(elapsed:Float):Void
 	{
 		super.update(elapsed);
-		
+
 		if (a.alpha >= 1 && !leaving )
 		{
 			if (jump.triggered || ball.triggered || swing.triggered)
 			{
 				leaving = true;
 				FlxG.inputs.remove(actions);
-				FlxG.sound.play(AssetPaths.possiblestartsound__wav, 1, false, null, true, function() {
+				FlxG.sound.play(AssetPaths.possiblestartsound__wav, 1, false, null, true, function()
+				{
 					FlxG.sound.play(AssetPaths.play_ball__wav);
-					FlxFlicker.flicker(a, 1, .25, true, true, function(_) {				
-						FlxG.camera.flash(0xffac3232, .2, function() {
+					FlxFlicker.flicker(a, 1, .25, true, true, function(_)
+					{
+						FlxG.camera.flash(0xffac3232, .2, function()
+						{
 							FlxG.switchState(new PlayState());
 						});
 					});
 				});
 			}
 		}
+	}
+	
+	override public function destroy():Void 
+	{
+		
+		elements = FlxDestroyUtil.destroyArray(elements);
+
+		actions = FlxDestroyUtil.destroy(actions);
+
+		jump = FlxDestroyUtil.destroy(jump);
+		swing = FlxDestroyUtil.destroy(swing);
+		ball = FlxDestroyUtil.destroy(ball);
+
+		a = FlxDestroyUtil.destroy(a);
+
+		
+		super.destroy();
 	}
 
 }

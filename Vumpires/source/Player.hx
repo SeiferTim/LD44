@@ -8,11 +8,11 @@ import flixel.addons.util.FlxFSM;
 import flixel.effects.FlxFlicker;
 import flixel.input.actions.FlxAction.FlxActionDigital;
 import flixel.input.actions.FlxActionManager;
+import flixel.util.FlxDestroyUtil;
 
-
-class Player extends FlxSprite 
+class Player extends FlxSprite
 {
-	
+
 	public static var actions:FlxActionManager;
 	
 	public var left:FlxActionDigital;
@@ -20,61 +20,59 @@ class Player extends FlxSprite
 	public var jump:FlxActionDigital;
 	public var swing:FlxActionDigital;
 	public var ball:FlxActionDigital;
-	
+
 	public var swingCooldown:Float = 0;
 	public var ballCooldown:Float = 0;
-	
+
 	public var fsm:FlxFSM<Player>;
-	
+
 	public static inline var GRAVITY:Int = 600;
 	public static inline var WALK_SPEED:Int = 80;
-	
+
 	public var attack:FlxSprite;
-	
+
 	public var swinging(get, null):Bool;
-	
+
 	public var dead:Bool = false;
-	
-	public function new() 
+
+	public function new()
 	{
 		super();
-		
+
 		frames = GraphicsCache.loadGraphicFromAtlas("player", AssetPaths.player__png, AssetPaths.player__xml).atlasFrames;
-		
+
 		width = 10;
 		height = 24;
 		offset.x = 2;
-		
+
 		attack = new FlxSprite();
 		attack.makeGraphic(12, 12);
 		attack.alive = false;
-		
+
 		animation.addByPrefix("walk", "player-walk-", 8, true, false, false);
 		animation.addByNames("swing", ["player-swing.png"], 4, false, false, false);
 		animation.addByNames("hurt", ["player-hurt.png","player-hurt.png","player-hurt.png","player-hurt.png", "player-dead.png"], 8, false, false, false);
 		animation.addByNames("jump", ["player-walk-1.png"], 8, false, false, false);
-		
+
 		acceleration.y = GRAVITY;
 		maxVelocity.set(120, GRAVITY);
-		
+
 		setFacingFlip(FlxObject.LEFT, true, false);
 		setFacingFlip(FlxObject.RIGHT, false, false);
-		
+
 		facing = FlxObject.RIGHT;
-		
+
 		fsm = new FlxFSM<Player>(this);
 		fsm.transitions
-				.add(Idle, Jump, Conditions.jump)
-				.add(Jump, Idle,  Conditions.grounded)
-				.addGlobal(Dead, Conditions.dead)
-				.start(Idle);
-		
+		.add(Idle, Jump, Conditions.jump)
+		.add(Jump, Idle,  Conditions.grounded)
+		.addGlobal(Dead, Conditions.dead)
+		.start(Idle);
+
 		addInputs();
-		
+
 	}
-	
-	
-	
+
 	private function addInputs():Void
 	{
 		left = new FlxActionDigital();
@@ -82,16 +80,16 @@ class Player extends FlxSprite
 		jump = new FlxActionDigital();
 		swing = new FlxActionDigital();
 		ball = new FlxActionDigital();
-		
+
 		if (actions == null)
 		{
 			actions = FlxG.inputs.add(new FlxActionManager());
 		}
-		
+
 		actions.addActions([left, right, jump, swing, ball]);
-		
+
 		left.addKey(LEFT, PRESSED);
-		left.addKey(S, PRESSED);
+		left.addKey(A, PRESSED);
 		right.addKey(D, PRESSED);
 		right.addKey(RIGHT, PRESSED);
 		jump.addKey(X, PRESSED);
@@ -104,56 +102,59 @@ class Player extends FlxSprite
 		swing.addGamepad(X, PRESSED);
 		ball.addKey(C, PRESSED);
 		ball.addGamepad(Y, PRESSED);
-		
+
 	}
-	
-	override public function update(elapsed:Float):Void 
+
+	override public function update(elapsed:Float):Void
 	{
 		if (swingCooldown > 0)
 			swingCooldown -= elapsed;
-		
+
 		if (ballCooldown > 0)
 			ballCooldown -= elapsed;
-		
+
 		fsm.update(elapsed);
-		
+
 		attack.alive = swinging;
 		attack.y = y + 7;
-		if(facing == FlxObject.RIGHT)
+		if (facing == FlxObject.RIGHT)
 			attack.x = x + width;
 		else
 			attack.x = x - 12;
-		
+
 		super.update(elapsed);
 	}
-	
-	override public function destroy():Void 
+
+	override public function destroy():Void
 	{
-		fsm.destroy();
-		fsm = null;
+		actions = FlxDestroyUtil.destroy(actions);
 		
-		actions.destroy();
-		actions = null;
+		left = FlxDestroyUtil.destroy(left);
+		right = FlxDestroyUtil.destroy(right);
+		jump = FlxDestroyUtil.destroy(jump);
+		swing = FlxDestroyUtil.destroy(swing);
+		ball = FlxDestroyUtil.destroy(ball);
+		fsm = FlxDestroyUtil.destroy(fsm);
+		attack = FlxDestroyUtil.destroy(attack);
 		
 		super.destroy();
 	}
-	
+
 	override function set_facing(Value:Int):Int
 	{
 		if (Value == FlxObject.LEFT)
 		{
 			offset.x = 12;
-			
+
 		}
 		else
 		{
 			offset.x = 2;
-			
+
 		}
 		return super.set_facing(Value);
 	}
-	
-	
+
 	public function doThrow():Void
 	{
 		var s:PlayState = cast(FlxG.state, PlayState);
@@ -165,19 +166,19 @@ class Player extends FlxSprite
 			ballCooldown = 2;
 		}
 	}
-	
+
 	public function doSwing():Void
 	{
 		animation.play("swing", true);
 		animation.finishCallback = finishAnim;
-		
+
 	}
-	
+
 	private function get_swinging():Bool
 	{
 		return (animation.name == "swing" && !animation.finished);
 	}
-	
+
 	private function finishAnim(S:String):Void
 	{
 		if (S == "swing")
@@ -185,13 +186,12 @@ class Player extends FlxSprite
 			swingCooldown = .1;
 		}
 	}
-	
-	override public function kill():Void 
+
+	override public function kill():Void
 	{
 		dead = true;
 	}
-	
-	
+
 	public function respawn():Void
 	{
 		dead = false;
@@ -199,9 +199,9 @@ class Player extends FlxSprite
 		swingCooldown = ballCooldown = 0;
 		FlxFlicker.flicker(this, 3);
 		fsm.state = new Idle();
-		
+
 	}
-	
+
 }
 
 class Conditions
@@ -210,17 +210,17 @@ class Conditions
 	{
 		return (Owner.jump.triggered && grounded(Owner));
 	}
-	
+
 	public static function grounded(Owner:Player):Bool
 	{
 		return Owner.isTouching(FlxObject.DOWN);
 	}
-	
+
 	public static function dead(Owner:Player):Bool
 	{
 		return Owner.dead && Owner.alive;
 	}
-	
+
 }
 
 class Idle extends FlxFSMState<Player>
@@ -230,32 +230,32 @@ class Idle extends FlxFSMState<Player>
 		owner.animation.play("walk", true);
 		owner.animation.pause();
 	}
-	
-	override public function update(elapsed:Float, owner:Player, fsm:FlxFSM<Player>):Void 
+
+	override public function update(elapsed:Float, owner:Player, fsm:FlxFSM<Player>):Void
 	{
 		var inputLeft:Bool = owner.left.triggered;
 		var inputRight:Bool = owner.right.triggered;
 		var inputSwing:Bool = owner.swing.triggered;
 		var inputBall:Bool = owner.ball.triggered;
-		
+
 		if (inputLeft && inputRight)
 			inputLeft = inputRight = false;
-		
+
 		if (inputSwing && owner.swingCooldown <= 0 && !owner.swinging)
 		{
 			owner.doSwing();
 		}
-		
+
 		if (owner.swinging)
 		{
 			owner.velocity.x = 0;
 		}
 		else
 		{
-			
+
 			if (inputBall && owner.ballCooldown <= 0)
 				owner.doThrow();
-			
+
 			var walking:Bool = inputLeft || inputRight;
 			if (walking)
 			{
@@ -267,8 +267,7 @@ class Idle extends FlxFSMState<Player>
 					if (owner.animation.name != "swing" || owner.animation.finished)
 						owner.animation.play("walk");
 				}
-				
-					
+
 				owner.facing = inputLeft ? FlxObject.LEFT : FlxObject.RIGHT;
 			}
 			else
@@ -284,78 +283,77 @@ class Idle extends FlxFSMState<Player>
 			}
 		}
 	}
-	
+
 }
 
 class Jump extends FlxFSMState<Player>
 {
-	override public function enter(owner:Player, fsm:FlxFSM<Player>):Void 
+	override public function enter(owner:Player, fsm:FlxFSM<Player>):Void
 	{
 		owner.animation.play("jump");
 		owner.velocity.y = -250;
 		FlxG.sound.play(AssetPaths.Jump__wav, .5);
 	}
-	
-	override public function update(elapsed:Float, owner:Player, fsm:FlxFSM<Player>):Void 
+
+	override public function update(elapsed:Float, owner:Player, fsm:FlxFSM<Player>):Void
 	{
 		var inputLeft:Bool = owner.left.triggered;
 		var inputRight:Bool = owner.right.triggered;
 		var inputSwing:Bool = owner.swing.triggered;
 		var inputBall:Bool = owner.ball.triggered;
-		
+
 		if (inputLeft && inputRight)
 			inputLeft = inputRight = false;
-		
+
 		if (inputSwing && owner.swingCooldown <= 0 && !owner.swinging)
 		{
 			owner.doSwing();
 		}
-		
+
 		if (owner.swinging)
 		{
 			owner.velocity.x = 0;
 		}
 		else
 		{
-			
+
 			if (inputBall && owner.ballCooldown <= 0)
 				owner.doThrow();
-				
+
 			var walking:Bool = inputLeft || inputRight;
 			if (walking)
 			{
 				owner.velocity.x = (inputLeft ? -1 : 1) * Player.WALK_SPEED;
-				
+
 				owner.facing = inputLeft ? FlxObject.LEFT : FlxObject.RIGHT;
 			}
 			else
 			{
 				owner.velocity.x = 0;
-				
-		}
-		
+
+			}
+
 		}
 	}
 }
 
-
 class Dead extends FlxFSMState<Player>
 {
 	private var respawnTimer:Float = -1000;
-	
-	override public function enter(owner:Player, fsm:FlxFSM<Player>):Void 
+
+	override public function enter(owner:Player, fsm:FlxFSM<Player>):Void
 	{
 		owner.velocity.x = 0;
 		owner.animation.play("hurt", true);
 		FlxG.sound.play(AssetPaths.PlayerDeath__wav, .5);
 		owner.alive = false;
 		owner.exists = true;
-		
+
 		respawnTimer = 3;
-		
+
 	}
-	
-	override public function update(elapsed:Float, owner:Player, fsm:FlxFSM<Player>):Void 
+
+	override public function update(elapsed:Float, owner:Player, fsm:FlxFSM<Player>):Void
 	{
 		if (respawnTimer > -1000)
 		{
@@ -366,7 +364,7 @@ class Dead extends FlxFSMState<Player>
 			else
 			{
 				respawnTimer = -1000;
-				
+
 				var p:PlayState = cast FlxG.state;
 				if (p.livesCount > 0)
 				{
@@ -379,10 +377,10 @@ class Dead extends FlxFSMState<Player>
 					FlxG.sound.music.stop();
 					FlxG.inputs.remove(Player.actions);
 					FlxG.switchState(new GameOverState());
-				}			
+				}
 			}
 		}
-		
+
 	}
-	
+
 }
